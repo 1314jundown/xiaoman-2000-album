@@ -118,8 +118,8 @@ h1 em { color: var(--accent); font-style: normal; }
 .book-cover { z-index: 4; overflow: visible; background: transparent; box-shadow: none; transition: opacity .65s ease, transform .75s cubic-bezier(.22,.61,.36,1); }
 .book-cover::after { display: none; }
 .is-open .book-cover { opacity: 0; pointer-events: none; transform: translateX(-8%) rotateY(28deg); }
-.cover-cta { position: absolute; z-index: 6; left: 50%; top: 83%; transform: translate(-50%, 14px); display: flex; align-items: center; gap: 15px; padding: 12px 16px 12px 19px; border: 0; border-radius: 999px; color: #201713; background: #efe4d2; cursor: pointer; font-size: 12px; box-shadow: 0 8px 22px rgba(0,0,0,.22); white-space: nowrap; transition: transform .25s ease, box-shadow .25s ease, opacity .35s ease; }
-.cover-cta:hover { transform: translate(-50%, 10px); box-shadow: 0 12px 28px rgba(0,0,0,.28); }
+.cover-cta { position: relative; z-index: 6; margin-top: 28px; display: inline-flex; align-items: center; gap: 15px; padding: 12px 16px 12px 19px; border: 0; border-radius: 999px; color: #201713; background: #efe4d2; cursor: pointer; font-size: 12px; box-shadow: 0 8px 22px rgba(0,0,0,.22); white-space: nowrap; transition: transform .25s ease, box-shadow .25s ease, opacity .35s ease; }
+.cover-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,.28); }
 .cta-arrow { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; color: #efe4d2; background: var(--accent); font-family: Arial, sans-serif; }
 
 .cover-3d-stage { position: absolute; inset: 0; display: grid; place-items: center; perspective: 1400px; }
