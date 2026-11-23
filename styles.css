@@ -76,6 +76,20 @@ button { font: inherit; }
 .control-button { width: 46px; height: 46px; border-radius: 50%; font-size: 20px; }
 .icon-button:hover, .control-button:hover { background: rgba(255,255,255,.11); border-color: rgba(241,234,221,.45); transform: translateY(-2px); }
 
+#musicButton { font-size: 17px; line-height: 1; padding-bottom: 1px; }
+#musicButton.is-muted { color: var(--muted); border-color: rgba(241,234,221,.18); }
+#musicButton.is-muted::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(-32deg);
+}
+.icon-button { position: relative; }
+
 .hero {
   width: min(90vw, 1400px);
   min-height: calc(100vh - 112px);

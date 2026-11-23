@@ -21,6 +21,7 @@ python serve.py 9000     # 端口被占用时手动指定
 index.html          页面骨架：顶栏、封面、控制条、页脚
 styles.css          全部样式（封面 3D、书脊、翻页纸片、章节标签、自定义光标）
 app.js              外层交互：翻页状态、进度、键盘、翻页音效、封面拖拽
+music.js            背景音乐：用 Web Audio 现场合成的八音盒 + 和弦垫，无音频文件
 inner-book.js       把 LeafThrough 纸页引擎挂到 #innerBookWebgl 上
 public/pages/       所有页面图片（cover + scene-01…16 + blank.svg + scene-18，均为 WebP）
 public/vendor/leafthrough/  LeafThrough 浏览器构建文件（已改为引用本地 Three.js）
@@ -65,6 +66,14 @@ python D:\周加一\gh-deploy.py                              # 幂等：重建 
 ```
 
 `public/pages/` 里是 19 张 WebP（合计约 1.8 MB），推送很快；如果临时放回了原始 PNG，`git push` 会明显变慢。
+
+## 背景音乐
+
+`music.js` 里没有任何音频文件，音乐是浏览器用 Web Audio 现场合成的：八音盒音色（正弦波 + 2/3/5 倍频泛音、快速衰减）、三和弦的长音垫、每小节一个低频根音，F 大调、62 BPM、八小节循环（Fmaj7 → C → Dm7 → Bb → F → C → Bb → C），再挂一个程序生成的混响。
+
+- 从点「打开画册」开始播放（浏览器要求用户手势才允许出声），控制条左上角 `♪` 可随时开关，选择会记在 `localStorage` 的 `xiaoman.music` 里
+- 切到别的标签页会自动静音淡出，回来再淡入；离开页面就停止排期
+- 想换和弦或旋律：改 `music.js` 顶部的 `BARS`（`pad` 是和弦 MIDI，`bass` 是根音，`mel` 是八个八分音符槽，`0` 表示休止），音量在 `VOLUME` 里
 
 ## 已知取舍
 

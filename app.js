@@ -50,6 +50,7 @@ const prevButton = document.querySelector('#prevButton')
 const nextButton = document.querySelector('#nextButton')
 const fullscreenButton = document.querySelector('#fullscreenButton')
 const soundButton = document.querySelector('#soundButton')
+const musicButton = document.querySelector('#musicButton')
 const coverPanel = document.querySelector('#coverPanel')
 const spread = document.querySelector('#spread')
 const turner = document.querySelector('#pageTurner')
@@ -150,6 +151,10 @@ function openBook() {
   stopCoverLoop()
   unlockAudio()
   pageSound('open')
+  if (window.bookMusic && window.bookMusic.preferred()) {
+    const started = window.bookMusic.start(audio.ctx)
+    if (started) syncMusicButton()
+  }
   renderSpread()
   captionShown = true
   loadInnerBook()
@@ -486,6 +491,25 @@ soundButton.addEventListener('click', () => {
   if (audio.enabled) pageSound('next')
   markActivity()
 })
+
+function syncMusicButton(on) {
+  if (!musicButton) return
+  const playing = typeof on === 'boolean' ? on : !!(window.bookMusic && window.bookMusic.isPlaying())
+  musicButton.setAttribute('aria-pressed', String(playing))
+  musicButton.classList.toggle('is-muted', !playing)
+  musicButton.title = playing ? '背景音乐：开' : '背景音乐：关'
+}
+
+musicButton?.addEventListener('click', () => {
+  if (!window.bookMusic) return
+  unlockAudio()
+  const playing = window.bookMusic.toggle(audio.ctx)
+  syncMusicButton(playing)
+  if (playing) pageSound('open')
+  markActivity()
+})
+
+syncMusicButton(false)
 
 /* ------------------------------------------------------------ 全屏与进度 */
 
