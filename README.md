@@ -38,6 +38,24 @@ vendor/three.module.js     本地 Three.js，避免依赖 CDN
 
 所有页面都是 16:9、2048×1152。新增内页时按阅读顺序往 `pageImages` 里追加即可，页码与进度会自动重算。
 
+## 线上版本与更新
+
+公开地址：<https://1314jundown.github.io/xiaoman-2000-album/>（仓库 <https://github.com/1314jundown/xiaoman-2000-album>，public，默认分支 `main`）。这是纯静态站点，没有构建产物：GitHub Pages 直接发布 `main` 分支根目录，`.nojekyll` 让 Jekyll 不要碰 `public/` 目录。
+
+本地改完后有三种更新方式：
+
+```bash
+# A. 有正常网络时，直接 git 推送（最简单）
+git add -A && git commit -m "更新文案" && git push        # 推送后 Pages 自动重建，约 30 秒
+
+# B. 网络受限时，用仓库外的 REST 脚本推送（只依赖 Python 标准库，走 git credential 里已有的 token）
+python D:\周加一\gh-deploy.py                              # 幂等：重建 tree/commit，再触发 Pages 构建
+
+# C. 只改文字时，可以直接在 GitHub 网页上编辑文件并提交
+```
+
+`public/pages/` 里有 38 MB 图片，`git push` 会比纯文本改动慢很多；换成 WebP 之后会明显好转。
+
 ## 已知取舍
 
 - 图片是未压缩的 PNG，整本约 38 MB；LeafThrough 默认预加载全部页面，首次打开会有等待。
