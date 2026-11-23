@@ -81,6 +81,6 @@ python D:\周加一\gh-deploy.py                              # 幂等：重建 
 - 首次翻页会有一次约 300 ms 的停顿（着色器与纹理首次上传），之后稳定 60 fps。封面 3D 的 `filter: drop-shadow` 已换成 `box-shadow`，拖动封面不再逐帧重算模糊。
 - 纸页引擎（LeafThrough + Three.js，约 2 MB）改成延迟加载：首屏只下载封面（约 140 KB）和样式脚本，读者第一次移动鼠标/按键或停留 2.5 秒后才在后台拉引擎。若点「打开画册」时引擎还没到，先用轻量的平面跨页显示，就绪后自动切到 3D 翻页（`app.js` 的 `warmUpInnerBook()` / `loadInnerBook()`，`innerbookready` 里用 `setSpread(leftIndex)` 对齐当前这一组）。
 - 竖屏窄屏下仍按跨页展示，32:9 会被压得很扁。若要做成移动端可读，需要在 `inner-book.js` 里按视口宽度把 `layout` 切到单页，并让 `.book-shell.is-open` 在窄屏改用 16:9 比例。
-- 三维纸张的边缘会随弯曲前倾，把靠近页面外沿的文字吃掉几个像素。为了保住页脚旁的旁白，`inner-book.js` 里把 `paper.bulge` 压到 `0.4`、`wrinkles` 压到 `0.5`，跨页接近平摊；翻页时仍有纸张卷曲，只是静态页面更"平"。
+- 三维纸张的边缘会随弯曲前倾，把靠近页面外沿的文字吃掉几个像素。现在的做法是**给卷曲留余量**而不是把纸压平：`inner-book.js` 里 `bleed: false`（按“视野”铺满画布而不是按“书盒”），并把 `public/vendor/leafthrough/chunk-MJSK3A5O.js` 里的 `SPREAD_OVERSCAN` 从 `0.27975` 调到 `0.07`（这是对 vendored 引擎的唯一一行改动）。四周约 7% 的余量让翻页时卷起的纸边不会被画布边界切掉，静态跨页也保住了外沿的旁白；纸张保持 `bulge: 1`、`wrinkles: .8` 的真实弧度。代价是书比铺满时小约 7%（`.book-shell.is-open` 宽度已调到 `min(96vw, 1780px)` 补回来）。
 - 章节标签是 `.book-shell` 的直接子节点，3D 与降级两种模式都会显示，只有封面态淡出。
 - 第 4 页（`scene-04`）的黑板写着「2020 年春季学期」，与 2000 年的设定不符，属于原画内容，需要重画才能修。
