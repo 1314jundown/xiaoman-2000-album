@@ -571,7 +571,7 @@ function rayThrough(camera, element, clientX, clientY, ray) {
 
 // src/framing.ts
 var REFERENCE_ASPECT = 1.377;
-var SPREAD_OVERSCAN = 0.27975;
+var SPREAD_OVERSCAN = 0.07;
 function framingFor(layout, aspect) {
   const k = aspect / REFERENCE_ASPECT;
   if (layout === "spread") {

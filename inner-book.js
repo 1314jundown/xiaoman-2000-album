@@ -28,11 +28,13 @@ if (!root) {
   magazine.pages = pageImages
   magazine.options = {
     layout: 'spread', pageAspect: 9 / 16, preload: pageImages.length,
-    loop: false, label: '小满的2000年 · 内页',
+    // bleed:false 让书按“视野”而不是“书盒”铺满画布，四周留出余量，
+    // 翻页时卷起来的纸边才不会被画布边界切掉（配合 chunk 里 SPREAD_OVERSCAN=0.12）
+    loop: false, label: '小满的2000年 · 内页', bleed: false,
     paper: {
       grain: true, grainScale: 1.35, grainStrength: .12,
       showThrough: .035, inkGloss: .2, roughness: .62, metalness: .08,
-      backColor: '#f4eee2', wrinkles: .5, bulge: .4, depthBias: true,
+      backColor: '#f4eee2', wrinkles: .8, bulge: 1, depthBias: true,
     },
     lighting: {
       ambient: { sky: '#fffaf0', ground: '#6a6058', intensity: 1.65 },
@@ -41,7 +43,7 @@ if (!root) {
     },
     motion: {
       speed: .86, dragDistance: .72, commitThreshold: .2,
-      curl: 1.18, maxTilt: 44, jitter: true, hoverLift: .045,
+      curl: 1.5, maxTilt: 44, jitter: true, hoverLift: .045,
     },
     interaction: { drag: true, click: true, hold: true, hover: true, keyboard: false },
   }

@@ -112,7 +112,7 @@ h1 em { color: var(--accent); font-style: normal; }
 .book-shell { position: relative; width: min(78vw, 1320px); aspect-ratio: 16 / 9; transform-style: preserve-3d; transition: width .8s cubic-bezier(.22,.61,.36,1), aspect-ratio .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); outline: none; touch-action: pan-y; }
 .book-shell:focus-visible { box-shadow: 0 0 0 2px var(--accent), 0 0 0 7px rgba(207,73,52,.18); }
 .book-shell.is-cover { transform: rotateX(0deg) rotateY(0deg) scale(.96); }
-.book-shell.is-open { width: min(88vw, 1500px); aspect-ratio: 32 / 9; transform: rotateX(1.5deg) rotateY(-1deg) scale(.955); }
+.book-shell.is-open { width: min(96vw, 1780px); aspect-ratio: 32 / 9; transform: rotateX(1.5deg) rotateY(-1deg) scale(.955); }
 
 .book-cover, .spread { position: absolute; inset: 0; overflow: hidden; border-radius: 3px; }
 .book-cover { z-index: 4; overflow: visible; background: transparent; box-shadow: none; transition: opacity .65s ease, transform .75s cubic-bezier(.22,.61,.36,1); }
