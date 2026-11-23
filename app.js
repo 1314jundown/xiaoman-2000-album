@@ -509,7 +509,8 @@ musicButton?.addEventListener('click', () => {
   markActivity()
 })
 
-syncMusicButton(false)
+// 按钮一开始就反映「偏好」：打开画册时才真的出声，但状态是一致的
+syncMusicButton(!!(window.bookMusic && window.bookMusic.preferred()))
 
 /* ------------------------------------------------------------ 全屏与进度 */
 
