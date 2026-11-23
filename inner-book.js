@@ -1,17 +1,17 @@
 import './public/vendor/leafthrough/element.js'
 
 const interiorPages = [
-  'public/pages/scene-01.png', 'public/pages/scene-02.png',
-  'public/pages/scene-03.png', 'public/pages/scene-04.png',
-  'public/pages/scene-05.png', 'public/pages/scene-06.png',
-  'public/pages/scene-07.png', 'public/pages/scene-08.png',
-  'public/pages/scene-09.png', 'public/pages/scene-10.png',
-  'public/pages/scene-11.png', 'public/pages/scene-12.png',
-  'public/pages/scene-13.png', 'public/pages/scene-14.png',
-  'public/pages/scene-15.png', 'public/pages/scene-16.png',
-  'public/pages/blank.svg', 'public/pages/scene-18.png',
+  'public/pages/scene-01.webp', 'public/pages/scene-02.webp',
+  'public/pages/scene-03.webp', 'public/pages/scene-04.webp',
+  'public/pages/scene-05.webp', 'public/pages/scene-06.webp',
+  'public/pages/scene-07.webp', 'public/pages/scene-08.webp',
+  'public/pages/scene-09.webp', 'public/pages/scene-10.webp',
+  'public/pages/scene-11.webp', 'public/pages/scene-12.webp',
+  'public/pages/scene-13.webp', 'public/pages/scene-14.webp',
+  'public/pages/scene-15.webp', 'public/pages/scene-16.webp',
+  'public/pages/blank.svg', 'public/pages/scene-18.webp',
 ]
-const pageImages = ['public/pages/cover.png', ...interiorPages]
+const pageImages = ['public/pages/cover.webp', ...interiorPages]
 
 const root = document.querySelector('#innerBookWebgl')
 

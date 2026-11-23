@@ -1,22 +1,22 @@
 const pageImages = [
-  'public/pages/scene-01.png',
-  'public/pages/scene-02.png',
-  'public/pages/scene-03.png',
-  'public/pages/scene-04.png',
-  'public/pages/scene-05.png',
-  'public/pages/scene-06.png',
-  'public/pages/scene-07.png',
-  'public/pages/scene-08.png',
-  'public/pages/scene-09.png',
-  'public/pages/scene-10.png',
-  'public/pages/scene-11.png',
-  'public/pages/scene-12.png',
-  'public/pages/scene-13.png',
-  'public/pages/scene-14.png',
-  'public/pages/scene-15.png',
-  'public/pages/scene-16.png',
+  'public/pages/scene-01.webp',
+  'public/pages/scene-02.webp',
+  'public/pages/scene-03.webp',
+  'public/pages/scene-04.webp',
+  'public/pages/scene-05.webp',
+  'public/pages/scene-06.webp',
+  'public/pages/scene-07.webp',
+  'public/pages/scene-08.webp',
+  'public/pages/scene-09.webp',
+  'public/pages/scene-10.webp',
+  'public/pages/scene-11.webp',
+  'public/pages/scene-12.webp',
+  'public/pages/scene-13.webp',
+  'public/pages/scene-14.webp',
+  'public/pages/scene-15.webp',
+  'public/pages/scene-16.webp',
   'public/pages/blank.svg',
-  'public/pages/scene-18.png',
+  'public/pages/scene-18.webp',
 ]
 
 // 每一组跨页对应一条章节文案：一组跨页 = 两张内页（pageImages[2n] / [2n + 1]）。
@@ -103,6 +103,7 @@ function renderSpread() {
 }
 
 let captionTimer = 0
+let captionShown = false
 function updateCaption() {
   const chapter = chapters[Math.min(Math.floor(leftIndex / 2), chapters.length - 1)] || chapters[0]
   const apply = () => {
@@ -110,12 +111,17 @@ function updateCaption() {
     chapterTitle.textContent = chapter.title
     spreadCaption.classList.remove('is-swapping')
   }
-  if (spreadCaption.classList.contains('is-swapping')) {
-    window.clearTimeout(captionTimer)
-    captionTimer = window.setTimeout(apply, 160)
+  window.clearTimeout(captionTimer)
+  // 标签还没真正露面时（刚开书）没有旧文字可交叉淡出，直接落字：
+  // 否则一旦主线程被 WebGL 首帧卡住，170ms 的计时器会被推迟，标签会停在透明状态。
+  if (!captionShown) {
+    apply()
     return
   }
-  if (chapterTitle.textContent === chapter.title) return
+  if (chapterTitle.textContent === chapter.title) {
+    spreadCaption.classList.remove('is-swapping')
+    return
+  }
   spreadCaption.classList.add('is-swapping')
   captionTimer = window.setTimeout(apply, 170)
 }
@@ -134,6 +140,7 @@ function openBook() {
   unlockAudio()
   pageSound('open')
   renderSpread()
+  captionShown = true
   window.innerBook?.open?.()
   markActivity()
   book.focus?.({ preventScroll: true })
@@ -142,6 +149,9 @@ function openBook() {
 function closeBook() {
   if (!isOpen) return
   isOpen = false
+  captionShown = false
+  window.clearTimeout(captionTimer)
+  spreadCaption.classList.remove('is-swapping')
   book.classList.remove('is-open')
   book.classList.add('is-cover')
   document.body.classList.remove('reader-open')
@@ -159,7 +169,7 @@ function prepareTurn(direction) {
   if (direction === 'prev' && leftIndex === 0) {
     turnState = { direction, startX: 0, startY: 0, progress: 0, toCover: true }
     turnFront.src = pageImages[leftIndex]
-    turnBack.src = 'public/pages/cover.png'
+    turnBack.src = 'public/pages/cover.webp'
     turner.classList.remove('is-settling')
     turner.classList.add('is-prev', 'is-visible')
     turner.style.setProperty('--curl', '0deg')

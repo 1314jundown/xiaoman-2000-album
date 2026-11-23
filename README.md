@@ -22,21 +22,31 @@ index.html          页面骨架：顶栏、封面、控制条、页脚
 styles.css          全部样式（封面 3D、书脊、翻页纸片、章节标签、自定义光标）
 app.js              外层交互：翻页状态、进度、键盘、翻页音效、封面拖拽
 inner-book.js       把 LeafThrough 纸页引擎挂到 #innerBookWebgl 上
-public/pages/       所有页面图片（cover + scene-01…18 + blank.svg）
+public/pages/       所有页面图片（cover + scene-01…16 + blank.svg + scene-18，均为 WebP）
 public/vendor/leafthrough/  LeafThrough 浏览器构建文件（已改为引用本地 Three.js）
 vendor/three.module.js     本地 Three.js，避免依赖 CDN
 ```
 
 ## 替换图片
 
-把图片放进 `public/pages/`，然后修改 `app.js` 顶部的 `pageImages` 数组（阅读顺序）与 `chapters` 数组（章节文案）。
+把图片放进 `public/pages/`，然后修改 `app.js` 顶部的 `pageImages` 数组（阅读顺序）与 `chapters` 数组（章节文案）；`inner-book.js` 顶部另有一份同样的内页列表，两处要一起改。
 
-- `cover.png` 是封面
-- `scene-01.png` 到 `scene-16.png` 是正文内页
+- `cover.webp` 是封面
+- `scene-01.webp` 到 `scene-16.webp` 是正文内页
 - `blank.svg` 是正文与封底之间的留白页
-- `scene-18.png` 是封底（`scene-17.png` 与它内容相同，属于历史遗留，可以删除）
+- `scene-18.webp` 是封底
 
-所有页面都是 16:9、2048×1152。新增内页时按阅读顺序往 `pageImages` 里追加即可，页码与进度会自动重算。
+页面统一按 **1600×900（16:9）WebP，质量 85** 导出：19 张合计约 1.8 MB。原始美术是 2048×1152 的 PNG（约 36 MB），PNG 只在需要重新压图时使用，不放进站点。
+
+用 Pillow 重新压一张图：
+
+```python
+from PIL import Image
+Image.open("scene-05.png").convert("RGB").resize((1600, 900), Image.LANCZOS) \
+     .save("public/pages/scene-05.webp", "WEBP", quality=85, method=6)
+```
+
+新增内页时按阅读顺序往两处 `pageImages` 里追加即可，页码与进度会自动重算。
 
 ## 线上版本与更新
 
@@ -54,12 +64,13 @@ python D:\周加一\gh-deploy.py                              # 幂等：重建 
 # C. 只改文字时，可以直接在 GitHub 网页上编辑文件并提交
 ```
 
-`public/pages/` 里有 38 MB 图片，`git push` 会比纯文本改动慢很多；换成 WebP 之后会明显好转。
+`public/pages/` 里是 19 张 WebP（合计约 1.8 MB），推送很快；如果临时放回了原始 PNG，`git push` 会明显变慢。
 
 ## 已知取舍
 
-- 图片是未压缩的 PNG，整本约 38 MB；LeafThrough 默认预加载全部页面，首次打开会有等待。
+- 页面图片压到 1600×900 WebP q85，整本约 1.8 MB（原 2048×1152 PNG 约 36 MB）。LeafThrough 仍会预加载全部页面，但总下载量已经很小；代价是 4K 显示器全屏时纸面纹理不如原图锐利。
+- 首次翻页会有一次约 300 ms 的停顿（着色器与纹理首次上传），之后稳定 60 fps。封面 3D 的 `filter: drop-shadow` 已换成 `box-shadow`，拖动封面不再逐帧重算模糊。
 - 竖屏窄屏下仍按跨页展示，32:9 会被压得很扁。若要做成移动端可读，需要在 `inner-book.js` 里按视口宽度把 `layout` 切到单页，并让 `.book-shell.is-open` 在窄屏改用 16:9 比例。
 - 三维纸张的边缘会随弯曲前倾，把靠近页面外沿的文字吃掉几个像素。为了保住页脚旁的旁白，`inner-book.js` 里把 `paper.bulge` 压到 `0.4`、`wrinkles` 压到 `0.5`，跨页接近平摊；翻页时仍有纸张卷曲，只是静态页面更"平"。
 - 章节标签在 WebGL 渲染时就位于书的下方；如果之后单独调试无 WebGL 的降级模式，注意 `.spread` 的回退路径不显示该标签。
-- `public/pages/scene-04.png` 的黑板写着「2020 年春季学期」，与 2000 年的设定不符，属于原画内容，需要重画才能修。
+- 第 4 页（`scene-04`）的黑板写着「2020 年春季学期」，与 2000 年的设定不符，属于原画内容，需要重画才能修。
