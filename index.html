@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a09" />
+    <meta name="description" content="《小满的2000年》线上画册：周佳仪 著，中南大学出版社。横屏翻阅的纸感绘本。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="小满的2000年 · 线上画册" />
+    <meta property="og:description" content="周佳仪 著 · 中南大学出版社 · 一本关于八岁、旧日光和倒计时的纸感绘本。" />
+    <meta property="og:image" content="public/pages/cover.png" />
+    <title>小满的2000年 · 线上画册</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f1ebdd'/%3E%3Ccircle cx='32' cy='32' r='13' fill='%23cf4934'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="experience" id="experience">
+      <div class="grain" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">小满的2000年</span>
+          <span class="brand-divider"></span>
+          <span class="brand-caption">线上画册</span>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" id="soundButton" type="button" aria-label="翻页声音" aria-pressed="true" title="翻页声音">◉</button>
+          <button class="icon-button" id="fullscreenButton" type="button" aria-label="全屏" title="全屏">⛶</button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-copy">
+          <p class="eyebrow">周佳仪 作品 · 中南大学出版社</p>
+          <h1 id="heroTitle">小满的<br /><em>2000 年</em></h1>
+          <p class="hero-note">八岁那年，全世界的钟都在倒数，她只数着铁皮盒里的硬币。</p>
+        </div>
+
+        <div class="book-stage" id="bookStage">
+          <div class="book-shell is-cover" id="book" tabindex="0" aria-label="《小满的2000年》线上画册，点击或使用方向键翻页">
+            <div class="book-cover" id="coverPanel">
+              <div class="cover-3d-stage" id="cover3dStage">
+                <div class="book-3d" id="book3d" aria-label="3D 画册封面">
+                  <div class="book-bottom"></div>
+                  <div class="book-pages"></div>
+                  <div class="book-cover-face">
+                    <img src="public/pages/cover.png" alt="《小满的2000年》封面" />
+                    <div class="cover-glare"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="cover-cta" id="openButton" type="button">
+              <span>打开画册</span>
+              <span class="cta-arrow">↗</span>
+            </button>
+
+            <div class="spread" id="spread" aria-live="polite">
+              <div class="spread-page spread-page-left">
+                <img id="leftPage" src="public/pages/scene-01.png" alt="画册内页一" />
+              </div>
+              <div class="spread-page spread-page-right">
+                <img id="rightPage" src="public/pages/scene-02.png" alt="画册内页二" />
+              </div>
+            </div>
+
+            <div class="inner-book-webgl" id="innerBookWebgl" aria-hidden="true">
+            </div>
+
+            <div class="page-turner" id="pageTurner" aria-hidden="true">
+              <div class="sheet-face page-front"><img id="turnFront" src="public/pages/scene-02.png" alt="" /></div>
+              <div class="sheet-face page-back"><img id="turnBack" src="public/pages/scene-03.png" alt="" /></div>
+            </div>
+
+            <div class="book-spine" aria-hidden="true"></div>
+
+            <div class="chapter-caption" id="spreadCaption" aria-hidden="true">
+              <span class="chapter-index" id="chapterIndex">壹</span>
+              <span class="chapter-title" id="chapterTitle">旧日客厅</span>
+            </div>
+          </div>
+          <div class="stage-shadow" aria-hidden="true"></div>
+        </div>
+
+        <div class="controls" id="controls">
+          <button class="control-button" id="prevButton" type="button" aria-label="上一页">←</button>
+          <div class="progress">
+            <span id="progressLabel">封面</span>
+            <span class="progress-line"><span id="progressFill"></span></span>
+            <span id="pageLabel">01 / 19</span>
+          </div>
+          <button class="control-button" id="nextButton" type="button" aria-label="下一页">→</button>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>按 ← → 翻页</span>
+        <span>拖住页面边缘翻阅</span>
+        <span id="statusText">点击封面开始</span>
+        <a class="opensource-link" href="https://github.com/dmtrbrl/leafthrough" target="_blank" rel="noreferrer">翻页引擎 · LeafThrough（MIT）</a>
+      </footer>
+    </main>
+
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+
+    <script src="app.js"></script>
+    <script type="module" src="inner-book.js"></script>
+  </body>
+</html>
