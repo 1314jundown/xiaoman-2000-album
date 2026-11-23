@@ -32,6 +32,17 @@ const chapters = [
   { index: '尾', title: '封底 · 很多年以后' },
 ]
 
+// Three.js 与纸页引擎约 2 MB，放到封面出现之后再按空闲时间取，首屏只需要这一张封面图。
+let innerBookRequest = null
+function loadInnerBook() {
+  if (!innerBookRequest) {
+    innerBookRequest = import('./inner-book.js').catch(error => {
+      console.warn('[app] 纸页引擎加载失败，改用轻量翻页', error)
+    })
+  }
+  return innerBookRequest
+}
+
 const book = document.querySelector('#book')
 const experience = document.querySelector('#experience')
 const openButton = document.querySelector('#openButton')
@@ -141,6 +152,7 @@ function openBook() {
   pageSound('open')
   renderSpread()
   captionShown = true
+  loadInnerBook()
   window.innerBook?.open?.()
   markActivity()
   book.focus?.({ preventScroll: true })
@@ -533,12 +545,27 @@ window.addEventListener('innerbookcommit', event => {
 })
 
 window.addEventListener('innerbookready', () => {
+  // 引擎是延迟加载的：读者可能已经在用降级翻页，把它同步到当前这一组。
+  if (isOpen) window.innerBook?.setSpread?.(leftIndex)
   updateUi()
   markActivity()
 })
 
 updateUi()
 startCoverLoop()
+
+// 首屏只加载封面（约 140 KB）。纸页引擎 + Three.js 约 2 MB，等读者真的上手了再取：
+// 第一次移动/点击/按键，或停留 2.5 秒后，才开始下载。点「打开画册」也会立刻触发。
+let innerBookWarmedUp = false
+function warmUpInnerBook() {
+  if (innerBookWarmedUp) return
+  innerBookWarmedUp = true
+  loadInnerBook()
+}
+;['pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(type => {
+  window.addEventListener(type, warmUpInnerBook, { once: true, passive: true })
+})
+window.setTimeout(warmUpInnerBook, 2500)
 
 // A small, tactile pointer for desktop. It is disabled on touch devices so the
 // page's native pointer gestures remain predictable.

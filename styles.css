@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap');
+/* 不引外部字体：Google Fonts 在国内经常连不上，而 CSS @import 会阻塞整页渲染。
+   改用本机中文宋体族，观感接近 Noto Serif SC，且完全没有第三方请求。 */
 
 :root {
   color-scheme: dark;
@@ -18,7 +19,7 @@ body {
   margin: 0;
   background: var(--stage);
   color: var(--ink);
-  font-family: 'Noto Serif SC', Georgia, serif;
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'Songti SC', STSong, SimSun, Georgia, serif;
 }
 
 button { font: inherit; }
